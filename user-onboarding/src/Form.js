@@ -28,6 +28,18 @@ return(
     <Field type="text" name="password" placeholder="What is your password?"/><br></br>
     {touched.password && errors.password && (<p className="errors">{errors.password}</p>)}
     <br></br>
+    <Field
+         
+          as="select"
+          name="choice"
+          type="dropdownlist"
+        >
+          <option value="Choice">Choose A Role</option>
+          <option value="computerscience">Computer Scienctist</option>
+          <option value="softwaredevelopment">Software Development</option>
+          <option value="mobiledesigner">Mobile Designer</option>
+        </Field>
+        {touched.choice && errors.choice && <p className="errors">{errors.choice}</p>}
     <label className="checkbox-container">Terms Of Service
     <Field 
     type="checkbox" 
@@ -42,9 +54,10 @@ return(
     </Form>
     {users.map( (user, index) => (
         <ul key={index}>
-            <li>{user.name}</li>
-            <li>{user.email}</li>
-            <li>{user.password}</li>
+            <li>Name: {user.name}</li>
+            <li>Email: {user.email}</li>
+            <li>Password: {user.password}</li>
+            <li>Interest: {user.choice}</li>
             
         </ul>
     ))}
@@ -57,12 +70,13 @@ return(
 
 
 const FormikUserForm = withFormik({
-    mapPropsToValues({name, email, password, terms}){
+    mapPropsToValues({name, email, password, terms, choice}){
         return{
             name: name || "",
             email: email || "",
             password: password || "",
             terms: terms || false,
+            choice: choice 
         };
 
     },
@@ -70,7 +84,10 @@ const FormikUserForm = withFormik({
         name: Yup.string().min(3, "Your name is too short ").required("Please enter a name!!"),
         email: Yup.string().email("Must be real Email").required("Please enter your email"),
         password: Yup.string().min(6, "Password must be 6 characters or longer").required("Password is required!!"),
-        terms: Yup.boolean().oneOf([true], "Must check terms of service")        
+        terms: Yup.boolean().oneOf([true], "Must check terms of service"),
+        choice: Yup.string()
+      .oneOf(["computerscience", "softwaredevelopment", "moviledesign"])
+      .required("Please choose an option")       
       }),
       handleSubmit(values, { setStatus, resetForm }) {
         // values is our object with all of our data
