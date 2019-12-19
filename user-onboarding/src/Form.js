@@ -68,7 +68,7 @@ const FormikUserForm = withFormik({
     },
     validationSchema: Yup.object().shape({
         name: Yup.string().min(3, "Your name is too short ").required("Please enter a name!!"),
-        email: Yup.string().email("Must be real Email"),
+        email: Yup.string().email("Must be real Email").required("Please enter your email"),
         password: Yup.string().min(6, "Password must be 6 characters or longer").required("Password is required!!"),
         terms: Yup.boolean().oneOf([true], "Must check terms of service")        
       }),
