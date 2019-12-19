@@ -3,6 +3,7 @@ import * as Yup from 'yup'
 import {Field, Form, withFormik} from 'formik'
 
 import React from 'react'
+import axios from "axios"
 
 const UserForm = (errors, touched) => {
     return (
@@ -13,7 +14,7 @@ const UserForm = (errors, touched) => {
         <Field type="email" name="email" placeholder="What is your email?"/><br></br>
         {touched.email && errors.email && (<p className="errors">{errors.email}</p>)}
         <Field type="password" name="password" placeholder="What is your password?"/><br></br>
-
+        {touched.password && errors.password && (<p className="errors">{errors.password}</p>)}
         <label className="checkbox-container">Terms of Service
         <Field type="checkbox" name="terms"/>
         <span className="checkmark"/>
@@ -36,8 +37,8 @@ const FormikUserForm = withFormik({
       name: Yup.string().min(3, "Your name is too short").required("Please enter your name!!"),
       email: Yup.string().email("Must be a valid email").required("Email is required"),
       password: Yup.string().min(6, "Password must be 6 characters or longer").required("Password is required"),
-      Yup.boolean().oneOf([true], "Must check terms of service")
-    })
+      terms: Yup.boolean().oneOf([true], "Must check terms of service")
+    }),
     handleSubmit(values, { setStatus, resetForm }) {
         console.log("submitting", values);
         axios
