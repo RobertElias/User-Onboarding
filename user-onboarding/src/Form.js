@@ -1,11 +1,16 @@
 import * as Yup from 'yup'
 
 import {Field, Form, withFormik} from 'formik'
+import React, {useEffect, useState} from 'react'
 
-import React from 'react'
 import axios from "axios"
 
-const UserForm = (errors, touched) => {
+const UserForm = (values, errors, touched, status) => {
+
+    const [use, setUsers] = useState([]);
+    useEffect(() => {
+        status && setUsers(users => [...users, status]);
+    },[status]);
     return (
         <div className="user-form">
         <Form>
@@ -17,6 +22,7 @@ const UserForm = (errors, touched) => {
         {touched.password && errors.password && (<p className="errors">{errors.password}</p>)}
         <label className="checkbox-container">Terms of Service
         <Field type="checkbox" name="terms"/>
+        {touched.terms && errors.terms && (<p className="errors">{errors.terms}</p>)}
         <span className="checkmark"/>
         </label>
         <button type="submit">Submit</button>
